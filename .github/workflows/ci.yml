@@ -14,7 +14,6 @@ on:
       - '**.md'
       - .editorconfig
       - .gitignore
-
 jobs:
   lint:
     uses: ./.github/workflows/lint.yml
