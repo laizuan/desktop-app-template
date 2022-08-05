@@ -33,7 +33,7 @@
     "typecheck": "npm run typecheck:main && npm run typecheck:preload && npm run typecheck:renderer",
     "postinstall": "cross-env ELECTRON_RUN_AS_NODE=1 electron scripts/update-electron-vendors.mjs",
     "clean:lib": "rimraf node_modules",
-    "reinstall": "rimraf yarn.lock && rimraf .browserslistrc && rimraf .electron-vendors.cache.json && rimraf .eslintcache && rimraf node_modules && yarn"
+    "reinstall": "rimraf package-lock.json && rimraf .browserslistrc && rimraf .electron-vendors.cache.json && rimraf .eslintcache && rimraf node_modules && npm install"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.31.0",
