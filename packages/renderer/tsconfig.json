@@ -9,15 +9,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
 
-    "types" : ["node"],
+    "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "#preload": [
-        "../preload/src/index"
-      ],
-      "/@/*": [
-        "./src/*"
-      ]
+      "#preload": ["../preload/src/index"],
+      "/@/*": ["./src/*"]
     },
     "lib": ["ESNext", "dom", "dom.iterable"]
   },
@@ -27,10 +23,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "types/**/*.d.ts",
-    "../../types/**/*.d.ts",
+    "../../types/**/*.d.ts"
   ],
-  "exclude": [
-    "**/*.spec.ts",
-    "**/*.test.ts",
-  ]
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

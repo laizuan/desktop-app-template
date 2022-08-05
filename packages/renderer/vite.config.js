@@ -1,9 +1,10 @@
 /* eslint-env node */
 
-import {chrome} from '../../.electron-vendors.cache.json';
-import {join} from 'path';
+import { chrome } from '../../.electron-vendors.cache.json';
+import { join } from 'path';
 import vue from '@vitejs/plugin-vue';
-import {renderer} from 'unplugin-auto-expose';
+import { renderer } from 'unplugin-auto-expose';
+import windiCSS from 'vite-plugin-windicss';
 
 const PACKAGE_ROOT = __dirname;
 
@@ -17,6 +18,7 @@ const config = {
   resolve: {
     alias: {
       '/@/': join(PACKAGE_ROOT, 'src') + '/',
+      '/#/': PACKAGE_ROOT + '/',
     },
   },
   base: '',
@@ -34,13 +36,14 @@ const config = {
       input: join(PACKAGE_ROOT, 'index.html'),
     },
     emptyOutDir: true,
-    brotliSize: false,
+    reportCompressedSize: false,
   },
   test: {
     environment: 'happy-dom',
   },
   plugins: [
     vue(),
+    windiCSS(),
     renderer.vite({
       preloadEntry: join(PACKAGE_ROOT, '../preload/src/index.ts'),
     }),

@@ -1,4 +1,4 @@
-import type {MaybeMocked} from 'vitest';
+import type {MockedClass} from 'vitest';
 import {beforeEach, expect, test, vi} from 'vitest';
 import {restoreOrCreateWindow} from '../src/mainWindow';
 
@@ -9,11 +9,13 @@ import {BrowserWindow} from 'electron';
  */
 vi.mock('electron', () => {
 
-  const bw = vi.fn() as MaybeMocked<typeof BrowserWindow>;
-  // @ts-expect-error It's work in runtime, but I Haven't idea how to fix this type error
+  // Use "as unknown as" because vi.fn() does not have static methods
+  const bw = vi.fn() as unknown as MockedClass<typeof BrowserWindow>;
   bw.getAllWindows = vi.fn(() => bw.mock.instances);
   bw.prototype.loadURL = vi.fn();
-  bw.prototype.on = vi.fn();
+  // Use "any" because the on function is overloaded
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  bw.prototype.on = vi.fn<any>();
   bw.prototype.destroy = vi.fn();
   bw.prototype.isDestroyed = vi.fn();
   bw.prototype.isMinimized = vi.fn();
@@ -29,7 +31,7 @@ beforeEach(() => {
 });
 
 
-test('Should create new window', async () => {
+test('Should create a new window', async () => {
   const {mock} = vi.mocked(BrowserWindow);
   expect(mock.instances).toHaveLength(0);
 
@@ -40,10 +42,10 @@ test('Should create new window', async () => {
 });
 
 
-test('Should restore existing window', async () => {
+test('Should restore an existing window', async () => {
   const {mock} = vi.mocked(BrowserWindow);
 
-  // Create Window and minimize it
+  // Create a window and minimize it.
   await restoreOrCreateWindow();
   expect(mock.instances).toHaveLength(1);
   const appWindow = vi.mocked(mock.instances[0]);
@@ -55,10 +57,10 @@ test('Should restore existing window', async () => {
 });
 
 
-test('Should create new window if previous was destroyed', async () => {
+test('Should create a new window if the previous one was destroyed', async () => {
   const {mock} = vi.mocked(BrowserWindow);
 
-  // Create Window and destroy it
+  // Create a window and destroy it.
   await restoreOrCreateWindow();
   expect(mock.instances).toHaveLength(1);
   const appWindow = vi.mocked(mock.instances[0]);

@@ -4,7 +4,7 @@ import {restoreOrCreateWindow} from '/@/mainWindow';
 
 
 /**
- * Prevent multiple instances
+ * Prevent electron from running multiple instances.
  */
 const isSingleInstance = app.requestSingleInstanceLock();
 if (!isSingleInstance) {
@@ -13,9 +13,8 @@ if (!isSingleInstance) {
 }
 app.on('second-instance', restoreOrCreateWindow);
 
-
 /**
- * Disable Hardware Acceleration for more power-save
+ * Disable Hardware Acceleration to save more system resources.
  */
 app.disableHardwareAcceleration();
 
@@ -29,13 +28,12 @@ app.on('window-all-closed', () => {
 });
 
 /**
- * @see https://www.electronjs.org/docs/v14-x-y/api/app#event-activate-macos Event: 'activate'
+ * @see https://www.electronjs.org/docs/latest/api/app#event-activate-macos Event: 'activate'.
  */
 app.on('activate', restoreOrCreateWindow);
 
-
 /**
- * Create app window when background process will be ready
+ * Create the application window when the background process is ready.
  */
 app.whenReady()
   .then(restoreOrCreateWindow)
@@ -43,21 +41,22 @@ app.whenReady()
 
 
 /**
- * Install Vue.js or some other devtools in development mode only
+ * Install Vue.js or any other extension in development mode only.
+ * Note: You must install `electron-devtools-installer` manually
  */
-if (import.meta.env.DEV) {
-  app.whenReady()
-    .then(() => import('electron-devtools-installer'))
-    .then(({default: installExtension, VUEJS3_DEVTOOLS}) => installExtension(VUEJS3_DEVTOOLS, {
-      loadExtensionOptions: {
-        allowFileAccess: true,
-      },
-    }))
-    .catch(e => console.error('Failed install extension:', e));
-}
+// if (import.meta.env.DEV) {
+//   app.whenReady()
+//     .then(() => import('electron-devtools-installer'))
+//     .then(({default: installExtension, VUEJS3_DEVTOOLS}) => installExtension(VUEJS3_DEVTOOLS, {
+//       loadExtensionOptions: {
+//         allowFileAccess: true,
+//       },
+//     }))
+//     .catch(e => console.error('Failed install extension:', e));
+// }
 
 /**
- * Check new app version in production mode only
+ * Check for new version of the application - production mode only.
  */
 if (import.meta.env.PROD) {
   app.whenReady()
@@ -65,4 +64,3 @@ if (import.meta.env.PROD) {
     .then(({autoUpdater}) => autoUpdater.checkForUpdatesAndNotify())
     .catch((e) => console.error('Failed check updates:', e));
 }
-
